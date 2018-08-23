@@ -6,7 +6,7 @@ fs.readFile('./data/name_gender.csv', (err, result) => {
     if (err) console.error(err)
 
     const { data } = papa.parse(result.toString(), { header: true })
-    const netData = data.filter(el => el.name && el.gender).map(el => {
+    const netData = data.filter((el, index) => el.name && el.gender && index % 20 === 0).map(el => {
         return {
             input: el.name,
             output: el.gender,
@@ -16,7 +16,7 @@ fs.readFile('./data/name_gender.csv', (err, result) => {
     const net = new brain.recurrent.LSTM()
 
     net.train(netData, {
-        iterations: 20,
+        iterations: 500,
         log: true,
         logPeriod: 1,
     })
